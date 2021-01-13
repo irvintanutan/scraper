@@ -1,14 +1,5 @@
 package com.example.yelp.service;
 
-import org.springframework.stereotype.Service;
+public interface YelpService {
 
-@Service
-public class YelpService {
-
-	public String getResponse() {
-		
-		return "Something";
-		
-	}
-	
 }
