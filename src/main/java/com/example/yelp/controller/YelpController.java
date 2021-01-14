@@ -1,16 +1,17 @@
 package com.example.yelp.controller;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.example.model.Review;
 import com.example.yelp.service.YelpServiceImpl;
 
 @RestController
@@ -20,38 +21,26 @@ public class YelpController {
 	YelpServiceImpl service;
 
 	@GetMapping("/scraper")
-	public String getAllClient(@RequestParam String url) {
-		String result = "";
+	ResponseEntity<?> getAllClient(@RequestParam String url) {
+
+		List<Review> result = new ArrayList<Review>();
+ 
 		try {
 
-			String html = service.getHTMLBody(url);
-			Document doc = Jsoup.parse(html);
-			Element element = doc.select("div[class=main-content-wrap main-content-wrap--full]").first();
-			Elements childScripts = element.getElementsByTag("script");
-			Element finalElement = null;
-
-			for (Element e : childScripts) {
-				if (e.toString().contains("reviewFeedQueryProps")) {
-					finalElement = e;
-					break;
-				}
+			result = this.service.getAllReviewByRestaurant(url);
+			
+			if (result.isEmpty()) {
+				throw new ResponseStatusException(
+				          HttpStatus.BAD_REQUEST, "No result found with url " + url);
 			}
-
-			String finalString = finalElement.data().replace("<!--", "").replace("-->", "");
-
-			result = finalString;
-			JSONObject object = new JSONObject(finalString);
-			JSONArray reviewObject = object.getJSONObject("bizDetailsPageProps")
-					.getJSONObject("reviewFeedQueryProps").getJSONArray("reviews");
-
-			result = reviewObject.toString();
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new ResponseStatusException(
+			          HttpStatus.BAD_REQUEST, "No result found with url " + url, e);
 		}
 
-		return result;
+		return ResponseEntity.ok(result);
 	}
 
 }

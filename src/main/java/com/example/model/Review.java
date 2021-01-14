@@ -1,64 +1,33 @@
 package com.example.model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class Review {
 
-	private String name;
-	private String location;
-	private String review;
-	private String date;
-	private int star;
-	private int follower;
-	private int rating;
+	private String comment;
+	private String date; 
+	private int rating; 
+	private User user;
 
-	public Review(String name, String location, String review, String date, int star, int follower, int rating,
-			String profUrl) {
+	public Review(String comment, String date, int rating, User user) {
 		super();
-		this.name = name;
-		this.location = location;
-		this.review = review;
-		this.date = date;
-		this.star = star;
-		this.follower = follower;
-		this.rating = rating;
-		this.profUrl = profUrl;
+		this.comment = comment;
+		this.date = date; 
+		this.rating = rating; 
+		this.user = user;
 	}
 
 	public Review() {
-		
-	}
-	
-	private String profUrl;
 
-	public String getProfUrl() {
-		return profUrl;
 	}
 
-	public void setProfUrl(String profUrl) {
-		this.profUrl = profUrl;
+	public String getComment() {
+		return comment;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	public String getReview() {
-		return review;
-	}
-
-	public void setReview(String review) {
-		this.review = review;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public String getDate() {
@@ -67,23 +36,7 @@ public class Review {
 
 	public void setDate(String date) {
 		this.date = date;
-	}
-
-	public int getStar() {
-		return star;
-	}
-
-	public void setStar(int star) {
-		this.star = star;
-	}
-
-	public int getFollower() {
-		return follower;
-	}
-
-	public void setFollower(int follower) {
-		this.follower = follower;
-	}
+	} 
 
 	public int getRating() {
 		return rating;
@@ -91,5 +44,13 @@ public class Review {
 
 	public void setRating(int rating) {
 		this.rating = rating;
+	} 
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }
