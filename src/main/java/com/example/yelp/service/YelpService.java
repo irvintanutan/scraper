@@ -4,10 +4,7 @@ import java.util.List;
 
 import com.example.model.Review;
 
-public interface YelpService {
-	
+public interface YelpService { 
 	public List<Review> getReviewByRating(int rating);
-	public List<Review> getAllReviewByRestaurant(String url);
-	
-	
+	public List<Review> getAllReviewByRestaurant(String url); 
 }
