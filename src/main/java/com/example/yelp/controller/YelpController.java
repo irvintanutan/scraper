@@ -21,13 +21,13 @@ public class YelpController {
 	YelpServiceImpl service;
 
 	@GetMapping("/scraper")
-	ResponseEntity<?> getAllClient(@RequestParam String url) {
+	ResponseEntity<?> getAllClient(@RequestParam String url, @RequestParam(required = false, defaultValue = "0") int rating) {
 
 		List<Review> result = new ArrayList<Review>();
  
 		try {
 
-			result = this.service.getAllReviewByRestaurant(url);
+			result = this.service.getAllReviewByRestaurant(url, rating);
 			
 			if (result.isEmpty()) {
 				throw new ResponseStatusException(

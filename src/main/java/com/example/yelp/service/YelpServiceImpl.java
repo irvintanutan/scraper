@@ -23,17 +23,11 @@ import com.example.model.User;
 public class YelpServiceImpl implements YelpService {
 
 	@Override
-	public List<Review> getReviewByRating(int rating) {
+	public List<Review> getAllReviewByRestaurant(String url, int rating) {
 		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public List<Review> getAllReviewByRestaurant(String url) {
-		// TODO Auto-generated method stub
-		
 		List<Review> result = new ArrayList<Review>();
-		
+
 		try {
 
 			String html = this.getHTMLBody(url);
@@ -50,17 +44,19 @@ public class YelpServiceImpl implements YelpService {
 			}
 
 			String finalString = finalElement.data().replace("<!--", "").replace("-->", "");
- 
+
 			JSONObject object = new JSONObject(finalString);
-			JSONArray reviews= object.getJSONObject("bizDetailsPageProps")
-					.getJSONObject("reviewFeedQueryProps").getJSONArray("reviews");
-			
-			for (int a = 0 ; a < reviews.length() ; a++) {
-				
+			JSONArray reviews = object.getJSONObject("bizDetailsPageProps").getJSONObject("reviewFeedQueryProps")
+					.getJSONArray("reviews");
+
+			for (int a = 0; a < reviews.length(); a++) {
+
 				JSONObject review = reviews.getJSONObject(a);
-				
+
+				if (rating > 0 && review.getInt("rating") != rating) continue;
+
 				Review r = new Review();
-				
+
 				User user = new User();
 				JSONObject userObject = review.getJSONObject("user");
 				user.setAvatarUrl(userObject.getString("src"));
@@ -70,16 +66,15 @@ public class YelpServiceImpl implements YelpService {
 				user.setPhotoCount(userObject.getInt("photoCount"));
 				user.setReviewCount(userObject.getInt("reviewCount"));
 				user.setUserId(review.getString("userId"));
-				  
-				
+
 				r.setComment(review.getJSONObject("comment").getString("text"));
-				r.setDate(review.getString("localizedDate"));  
+				r.setDate(review.getString("localizedDate"));
 				r.setRating(review.getInt("rating"));
-				r.setUser(user); 
-				
+				r.setUser(user);
+
 				result.add(r);
 			}
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -97,11 +92,11 @@ public class YelpServiceImpl implements YelpService {
 		Reader streamReader = null;
 
 		if (status > 299) {
-		    streamReader = new InputStreamReader(con.getErrorStream());
+			streamReader = new InputStreamReader(con.getErrorStream());
 		} else {
-		    streamReader = new InputStreamReader(con.getInputStream());
+			streamReader = new InputStreamReader(con.getInputStream());
 		}
-		
+
 		BufferedReader in = new BufferedReader(streamReader);
 		String inputLine;
 		StringBuffer content = new StringBuffer();
@@ -111,7 +106,7 @@ public class YelpServiceImpl implements YelpService {
 		in.close();
 
 		con.disconnect();
-		
+
 		return content.toString();
 	}
 
