@@ -9,7 +9,7 @@ Build a web service RESTFUL API using SPRING framework. The service scrapes REVI
 Download the source code or clone 
 then run on command line
 
-    mvn sprint-boot:run
+    mvn spring-boot:run
 
 ## Prerequisite
 
