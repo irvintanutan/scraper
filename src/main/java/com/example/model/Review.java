@@ -8,18 +8,29 @@ public class Review {
 	private String comment;
 	private String date; 
 	private int rating; 
-	private User user;
+	private User user;	 
+	private VisionApi vision;
 
-	public Review(String comment, String date, int rating, User user) {
+
+	public Review(String comment, String date, int rating, User user, VisionApi vision) {
 		super();
 		this.comment = comment;
-		this.date = date; 
-		this.rating = rating; 
-		this.user = user;
-	}
+		this.date = date;
+		this.rating = rating;
+		this.user = user; 
+		this.vision = vision;
+	} 
 
 	public Review() {
 
+	}  
+ 
+	public VisionApi getVision() {
+		return vision;
+	}
+
+	public void setVision(VisionApi vision) {
+		this.vision = vision;
 	}
 
 	public String getComment() {

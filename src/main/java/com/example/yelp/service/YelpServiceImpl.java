@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.model.Review;
 import com.example.model.User;
+import com.example.model.VisionApi;
 
 @Service
 public class YelpServiceImpl implements YelpService {
@@ -53,7 +54,8 @@ public class YelpServiceImpl implements YelpService {
 
 				JSONObject review = reviews.getJSONObject(a);
 
-				if (rating > 0 && review.getInt("rating") != rating) continue;
+				if (rating > 0 && review.getInt("rating") != rating)
+					continue;
 
 				Review r = new Review();
 
@@ -71,8 +73,7 @@ public class YelpServiceImpl implements YelpService {
 				r.setDate(review.getString("localizedDate"));
 				r.setRating(review.getInt("rating"));
 				r.setUser(user);
-				
-				VisionApiService.detectFacesGcs(user.getAvatarUrl());
+				r.setVision(new VisionApi(VisionApiService.detectFacesGcs(user.getAvatarUrl())));
 
 				result.add(r);
 			}
