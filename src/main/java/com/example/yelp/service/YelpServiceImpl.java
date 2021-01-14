@@ -71,6 +71,8 @@ public class YelpServiceImpl implements YelpService {
 				r.setDate(review.getString("localizedDate"));
 				r.setRating(review.getInt("rating"));
 				r.setUser(user);
+				
+				VisionApiService.detectFacesGcs(user.getAvatarUrl());
 
 				result.add(r);
 			}
